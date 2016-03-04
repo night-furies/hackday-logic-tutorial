@@ -10,6 +10,7 @@
             [logic-tut.core :as tut]
             [logic-tut.book :as book]
             [logic-tut.sensor :as sensor]
+            [logic-tut.sensor-simple :as sensor-simple]
             ))
 
 (defn refresh
