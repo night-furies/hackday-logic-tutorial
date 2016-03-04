@@ -6,4 +6,15 @@
   logic-tut.dev
   (:require [clojure.tools.logging :as log]
             [clojure.tools.namespace.repl :as repl]
-            [clojure.walk :refer [macroexpand-all]]
+            [clojure.walk :refer [macroexpand-all]
+            [logic-tut.core :as tut]]))
+
+(defn refresh
+  ([]
+    (repl/refresh))
+  ([& args]
+    (apply #'repl/refresh args)))
+
+;;; Aliases
+
+(def reload #'refresh)
