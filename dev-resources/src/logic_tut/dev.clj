@@ -7,7 +7,8 @@
   (:require [clojure.tools.logging :as log]
             [clojure.tools.namespace.repl :as repl]
             [clojure.walk :refer [macroexpand-all]]
-            [logic-tut.core :as tut]))
+            [logic-tut.core :as tut]
+            [logic-tut.book :as book]))
 
 (defn refresh
   ([]
