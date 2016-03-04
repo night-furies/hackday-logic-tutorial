@@ -38,28 +38,33 @@
    [:a8 :type :Person]
    [:a8 :name "Bryan Singer"]])
 
+(defn get-relations
+  [graph studio-name director-name]
+  (logic/fresh [studio film-coll film cast director]
+    ;; Relate the original studio-name to a film collection
+    (logic/membero [studio :name studio-name] graph)
+    (logic/membero [studio :type :FilmStudio] graph)
+    (logic/membero [studio :filmsCollection film-coll] graph)
+
+    ;; Relate any film collections to their individual films
+    (logic/membero [film-coll :type :FilmCollection] graph)
+    (logic/membero [film-coll :film film] graph)
+
+    ;; Then from film to cast members
+    (logic/membero [film :type :Film] graph)
+    (logic/membero [film :cast cast] graph)
+
+    ;; Grounding to cast members of type :director
+    (logic/membero [cast :type :FilmCast] graph)
+    (logic/membero [cast :director director] graph)
+
+    ;; Finally, attach to the director-name
+    (logic/membero [director :type :Person] graph)
+    (logic/membero [director :name director-name] graph)))
+
 (defn directors-at
-  "Find all of the directors that have directed at a given studio"
+  "Find all of the directors that have directed at a given studio."
   [graph studio-name]
   (logic/run* [director-name]
-    (logic/fresh [studio film-coll film cast director]
-      ;; Relate the original studio-name to a film collection
-      (logic/membero [studio :name studio-name] graph)
-      (logic/membero [studio :type :FilmStudio] graph)
-      (logic/membero [studio :filmsCollection film-coll] graph)
+    (get-relations graph studio-name director-name)))
 
-      ;; Relate any film collections to their individual films
-      (logic/membero [film-coll :type :FilmCollection] graph)
-      (logic/membero [film-coll :film film] graph)
-
-      ;; Then from film to cast members
-      (logic/membero [film :type :Film] graph)
-      (logic/membero [film :cast cast] graph)
-
-      ;; Grounding to cast members of type :director
-      (logic/membero [cast :type :FilmCast] graph)
-      (logic/membero [cast :director director] graph)
-
-      ;; Finally, attach to the director-name
-      (logic/membero [director :type :Person] graph)
-      (logic/membero [director :name director-name] graph))))
