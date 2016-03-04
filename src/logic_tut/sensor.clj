@@ -1,4 +1,5 @@
-(ns logic-tut.sensor)
+(ns logic-tut.sensor
+  (:require [clojure.core.logic :as logic]))
 
 (def sensor-graph
   [; Graph of sensor hierarchies for Landsat and MODIS
@@ -44,7 +45,13 @@
    [:d4 :type :Sensor ]
    [:d4 :id "tirs" ]
    [:d4 :name "Thermal Infrared Sensor" ]
-   
-   ]
+   ])
+  
+  (defn find-by-id
+   [node-type]
+   (logic/run* [q]
+    (logic/membero [q :type node-type] sensor-graph)))
+ 
+    
    
     
