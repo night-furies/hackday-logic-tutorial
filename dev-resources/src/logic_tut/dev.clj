@@ -8,7 +8,8 @@
             [clojure.tools.namespace.repl :as repl]
             [clojure.walk :refer [macroexpand-all]]
             [logic-tut.core :as tut]
-            [logic-tut.book :as book]))
+            [logic-tut.book :as book]
+            [logic-tut.sensor :as sensor]))
 
 (defn refresh
   ([]
