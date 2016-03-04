@@ -4,7 +4,16 @@
 
 ## Usage
 
-FIXME
+
+```
+$ lein repl
+```
+```clj
+logic-tut.dev=> (sensor-simple/sensors-for-mission
+                  sensor-simple/sat-graph
+                  "Landsat")
+("TM" "TM" "ETM")
+```
 
 ## License
 
