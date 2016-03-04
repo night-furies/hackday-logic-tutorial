@@ -2,45 +2,49 @@
 
 (def sensor-graph
   [; Graph of sensor hierarchies for Landsat and MODIS
-   [:a1 :]
+   [:a1 :type :BaseSensor]
+   [:a1 :mission :b1]
+      
+   [:b1 :type :Mission ]
+   [:b1 :mission-name "landsat" ]
+   [:b1 :satellite :c1 ]
+   [:b1 :satellite :c2 ]
+   [:b1 :satellite :c3 ]
+   [:b1 :satellite :c4 ]
    
-   [:b1 :mission-name "modis" ]
+   [:c1 :type :Satellite ]
+   [:c1 :id 4 ]
+   [:c1 :sensor :d1 ]
    
-   [:b2 :mission-name "landsat" ]
-   [:landsat :pixel-size 30 ]
+   [:c2 :type :Satellite ]
+   [:c2 :id 5 ]
+   [:c1 :sensor :d1 ]
    
-   ; how do we dynamically alter attributes at runtime?
-   [:landsat :path "nodata" ]
-   [:landsat :row "nodata" ]
-   [:landsat :year "nodata" ]
-   [:landsat :doy "nodata" ]
-   [:landsat :station "nodata" ]
-   [:landsat :version "nodata" ]
+   [:c3 :type :Satellite ]
+   [:c3 :id 7 ]
+   [:c1 :sensor :d2 ]
    
-   [:landsat-4 ]
+   [:c4 :type :Satellite ]
+   [:c4 :id 8 ]
+   [:c1 :sensor :d3 ]
+   [:c1 :sensor :d4 ]
    
-   [:landsat-5 ]
+   [:d1 :type :Sensor ]
+   [:d1 :id "tm" ]
+   [:d1 :name "Thematic Mapper" ]
    
-   [:landsat-7 ]
+   [:d2 :type :Sensor ]
+   [:d2 :id "etm" ]
+   [:d2 :name "Enhanced Thematic Mapper Plus" ]
    
-   [:landsat-8 ]
+   [:d3 :type :Sensor ]
+   [:d3 :id "oli" ]
+   [:d3 :name "Operational Land Imager" ]
    
-   [:modis-aqua ]
+   [:d4 :type :Sensor ]
+   [:d4 :id "tirs" ]
+   [:d4 :name "Thermal Infrared Sensor" ]
    
-   [:modis-terra-09A1 ]
-   [:modis-terra-09GA ]
-   [:modis-terra-09GQ ]
-   [:modis-terra-09Q1 ]
-   [:modis-terra-13A1 ]
-   [:modis-terra-13A2 ]
-   [:modis-terra-13A3 ]
-   [:modis-terra-13Q1 ]
+   ]
    
-   [:modis-aqua-09A1 ]
-   [:modis-aqua-09GA ]
-   [:modis-aqua-09GQ ]
-   [:modis-aqua-09Q1 ]
-   [:modis-aqua-13A1 ]
-   [:modis-aqua-13A2 ]
-   [:modis-aqua-13A3 ]
-   [:modis-aqua-13Q1 ]]
+    
