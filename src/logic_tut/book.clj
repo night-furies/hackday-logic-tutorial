@@ -38,7 +38,7 @@
    [:a8 :type :Person]
    [:a8 :name "Bryan Singer"]])
 
-(defn get-relations
+(defn make-relations
   [graph studio-name director-name]
   (logic/fresh [studio film-coll film cast director]
     ;; Relate the original studio-name to a film collection
@@ -66,5 +66,5 @@
   "Find all of the directors that have directed at a given studio."
   [graph studio-name]
   (logic/run* [director-name]
-    (get-relations graph studio-name director-name)))
+    (make-relations graph studio-name director-name)))
 
