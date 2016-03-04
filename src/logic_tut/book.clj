@@ -1,5 +1,6 @@
 (ns logic-tut.book
-  (:require [clojure.core.logic :as logic]))
+  (:require [clojure.core.logic :as logic]
+            [clojure.tools.logging :as log]))
 
 (def movie-graph
   [;; The "NewMarket Films" studio
@@ -41,7 +42,16 @@
 (defn make-relations
   [graph studio-name director-name]
   (logic/fresh [studio film-coll film cast director]
-    ;; Relate the original studio-name to a film collection
+    ;; Relate the original studio-name to a film collection - from the
+    ;; core.logic docs:
+    ;;
+    ;; "When you unify two lvars, the operation constrains each lvar
+    ;;  to have the same set of possible values. A mental shortcut is
+    ;;  to consider unification to be the intersection of the two sets
+    ;;  lvar values."
+    ;;
+    ;; This means that below, we're saying:
+    ;;  *
     (logic/membero [studio :name studio-name] graph)
     (logic/membero [studio :type :FilmStudio] graph)
     (logic/membero [studio :filmsCollection film-coll] graph)
