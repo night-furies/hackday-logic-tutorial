@@ -1,24 +1,28 @@
-(ns logic-tut.core)
-
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
-
+(ns logic-tut.sensor)
 
 (def sensor-graph
   [; Graph of sensor hierarchies for Landsat and MODIS
-   [:base-sensor ]
+   [:a1 :]
    
-   [:modis ]
+   [:b1 :mission-name "modis" ]
    
-   [:landsat ]
+   [:b2 :mission-name "landsat" ]
    [:landsat :pixel-size 30 ]
-   [:landsat :pixel-size-unit "meters" ]
+   
+   ; how do we dynamically alter attributes at runtime?
+   [:landsat :path "nodata" ]
+   [:landsat :row "nodata" ]
+   [:landsat :year "nodata" ]
+   [:landsat :doy "nodata" ]
+   [:landsat :station "nodata" ]
+   [:landsat :version "nodata" ]
    
    [:landsat-4 ]
+   
    [:landsat-5 ]
+   
    [:landsat-7 ]
+   
    [:landsat-8 ]
    
    [:modis-aqua ]
