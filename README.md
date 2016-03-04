@@ -1,6 +1,6 @@
 # logic-tut
 
-A Clojure library designed to ... well, that part is up to you.
+*HackDay Project: Logic and Relations Programming with Clojure's core.logic*
 
 ## Usage
 
@@ -9,6 +9,3 @@ FIXME
 ## License
 
 Copyright © 2016 Duncan McGreggor, David Hill
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
