@@ -8,4 +8,4 @@ FIXME
 
 ## License
 
-Copyright © 2016 Duncan McGreggor, David Hill
+Copyright © 2016 David Hill, Duncan McGreggor
