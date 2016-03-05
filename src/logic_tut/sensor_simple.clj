@@ -42,7 +42,27 @@
 ;; In our simple example, we can do something like this:
 ;; * "what missions support TM?"
 
-(defn make-relations
+(defn make-satellite-relations
+  [graph mission-name satellite-name]
+  (logic/fresh [sat-mission sat-coll sat]
+    ;; contraints on mission
+    (logic/membero [sat-mission :name mission-name] graph)
+    (logic/membero [sat-mission :type :mission] graph)
+    (logic/membero [sat-mission :satellite-collection sat-coll] graph)
+    ;; contraints on the collection
+    (logic/membero [sat-coll :type :satellite-collection] graph)
+    (logic/membero [sat-coll :satellite sat] graph)
+    ;; constraints on the satellite
+    (logic/membero [sat :type :satellite] graph)
+    (logic/membero [sat :name satellite-name] graph)))
+
+(defn satellites-for-mission
+  "Find all of the sensors for the given mission."
+  [graph mission-name]
+  (logic/run* [satellite-name]
+    (make-satellite-relations graph mission-name satellite-name)))
+
+(defn make-mission-sensor-relations
   [graph mission-name sensor-name]
   (logic/fresh [sat-mission sat-coll sat sensor]
     ;; contraints on mission
@@ -63,4 +83,29 @@
   "Find all of the sensors for the given mission."
   [graph mission-name]
   (logic/run* [sensor-name]
-    (make-relations graph mission-name sensor-name)))
+    (make-mission-sensor-relations graph mission-name sensor-name)))
+
+(defn make-satellite-sensor-relations
+  [graph mission-name satellite-name sensor-name]
+  (logic/fresh [sat-mission sat-coll sat sensor]
+    ;; contraints on mission
+    (logic/membero [sat-mission :name mission-name] graph)
+    (logic/membero [sat-mission :type :mission] graph)
+    (logic/membero [sat-mission :satellite-collection sat-coll] graph)
+    ;; contraints on the collection
+    (logic/membero [sat-coll :type :satellite-collection] graph)
+    (logic/membero [sat-coll :satellite sat] graph)
+    ;; constraints on the satellite
+    (logic/membero [sat :type :satellite] graph)
+    (logic/membero [sat :name satellite-name] graph)
+    (logic/membero [sat :sensor sensor] graph)
+    ;; constraints on the sensors
+    (logic/membero [sensor :type :sensor] graph)
+    (logic/membero [sensor :name sensor-name] graph)))
+
+(defn sensors-for-satellite
+  "Find all of the sensors for the given mission."
+  [graph mission-name satellite-name]
+  (logic/run* [sensor-name]
+    (make-satellite-sensor-relations
+      graph mission-name satellite-name sensor-name)))

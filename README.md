@@ -17,11 +17,38 @@
 $ lein repl
 ```
 ```clj
-logic-tut.dev=> (simple/sensors-for-mission
-                  simple/sat-graph
-                  "Landsat")
+logic-tut.dev=> (require '[logic-tut.sensor-simple :refer [satellites-for-mission
+                                                           sensors-for-mission
+                                                           sensors-for-satellite
+                                                           sat-graph]])
+nil
+```
+
+Get all satellites:
+
+```clj
+logic-tut.dev=> (satellites-for-mission sat-graph "Landsat")
+("Landsat 4" "Landsat 5" "Landsat 7")
+```
+
+Get all sensors:
+
+```clj
+logic-tut.dev=> (sensors-for-mission sat-graph "Landsat")
 ("TM" "TM" "ETM")
 ```
+
+Get sensors for satellites:
+
+```clj
+logic-tut.dev=> (sensors-for-satellite sat-graph "Landsat" "Landsat 4")
+("TM")
+logic-tut.dev=> (sensors-for-satellite sat-graph "Landsat" "Landsat 5")
+("TM")
+logic-tut.dev=> (sensors-for-satellite sat-graph "Landsat" "Landsat 7")
+("ETM")
+```
+
 
 ## License
 
