@@ -13,6 +13,10 @@
 
 ## Usage
 
+For the Hack Day, we explore the possibility of converting OO, hierarchical code for querying satellite metadata to core.logic relations. To do this, we built a simplified graph database (vector of vectors) that connected the components together. After we wrote the appropriate relations, we were then able to write "querying" functions that performed the core.logic ``run*`` to get the list of items that satisfied the relations we created.
+
+Below are example usages of these:
+
 ```
 $ lein repl
 ```
