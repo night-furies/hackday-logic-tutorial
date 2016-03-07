@@ -5,7 +5,7 @@
 
 (pldb/db-rel plant  p)
 (pldb/db-rel animal a)
-(pldb/db-rel eats   a m) ; animal / meal
+(pldb/db-rel eats   a m)
 
 (def big-red-ranch
   (pldb/db
@@ -34,31 +34,25 @@
    [eats 'feline 'rodent]
    [eats 'rodent 'corn]
    [eats 'rodent 'potatoe]
+   [eats 'rodent 'rodent]
    [eats 'porcine 'corn]
    [eats 'porcine 'bovine]
    [eats 'porcine 'farmer]
    [eats 'fly-trap 'insect]))
 
-
-;; What are all the things that a pig will eat?
-(pldb/with-db big-red-ranch
-  (distinct (run* [eater meal]
-    (all
-      (== eater 'porcine)
-      (conde [(plant meal) (eats eater meal)]
-             [(animal meal) (eats eater meal)])))))
-
-(defn meat-eater [it]
+(defn meat-eater [it is]
   (fresh [prey]
     (animal it)
     (animal prey)
-    (eats it prey)))
+    (eats it prey)
+    (== is true)))
 
-(defn plant-eater [it]
+(defn plant-eater [it is]
   (fresh [meal]
     (animal it)
     (plant meal)
-    (eats it meal)))
+    (eats it meal)
+    (== is true)))
 
 (defn cannibal [it is]
   (conda
@@ -69,27 +63,24 @@
   (pldb/with-db db
     (run* [answer]
       (fresh [it]
-        (conda [(and* [(nafc plant-eater critter)
-                       (meat-eater critter)
-                       (== answer true)])]
+        (conda [(and* [(nafc plant-eater critter answer)
+                       (meat-eater critter answer)])]
                [(== answer false)])))))
 
 (defn herbivore? [critter db]
   (pldb/with-db db
     (run* [answer]
       (fresh [it]
-        (conda [(and* [(nafc meat-eater critter)
-                       (plant-eater critter)
-                       (== answer true)])]
+        (conda [(and* [(nafc meat-eater critter answer)
+                       (plant-eater critter answer)])]
                [(== answer false)])))))
 
 (defn omnivore? [critter db]
   (pldb/with-db db
     (run* [answer]
       (fresh [it]
-        (conda [(and* [(meat-eater critter)
-                       (plant-eater critter)
-                       (== answer true)])]
+        (conda [(and* [(meat-eater critter answer)
+                       (plant-eater critter answer)])]
                [(== answer false)])))))
 
 (defn cannibal? [critter db]
@@ -98,6 +89,45 @@
        (fresh [a]
          (== a critter)
          (cannibal a answer)))))
+
+;; What are all the things that a pig will eat?
+(pldb/with-db big-red-ranch
+  (distinct (run* [eater meal]
+    (all
+      (== eater 'porcine)
+      (conde [(plant meal) (eats eater meal)]
+             [(animal meal) (eats eater meal)])))))
+
+(pldb/with-db big-red-ranch
+  (run* [q]
+    (fresh [a]
+      (== q a)
+      (eats a a))))
+
+;; Are there any plants that eat animals?
+(pldb/with-db big-red-ranch
+  (run* [q]
+    (fresh [it prey]
+      (plant it)
+      (animal prey)
+      (eats it prey)
+      (== q it))))
+
+;; What animals eat plants?
+(pldb/with-db big-red-ranch
+  (run* [q]
+    (fresh [it meal]
+      (animal it)
+      (plant meal)
+      (eats it meal)
+      (== q [it meal]))))
+
+;; What eats grass?
+(pldb/with-db big-red-ranch
+  (run* [it]
+    (fresh [meal]
+      (eats it meal)
+      (== meal 'grass))))
 
 ;; pigs will eat anything.
 (carnivore? 'porcine big-red-ranch)
@@ -115,5 +145,20 @@
 (omnivore?  'equine big-red-ranch)
 
 ;; oh, yeah. pigs will eat ANYTHING.
+;; ...but not horses. Horses rock!
 (cannibal? 'porcine big-red-ranch)
 (cannibal? 'equine big-red-ranch)
+
+;; ...What aren't cannibals?
+(pldb/with-db big-red-ranch
+  (distinct
+   (run* [answer]
+     (animal answer)
+     (cannibal answer false))))
+
+;; ...Do any plants eat things and what do they eat??
+(pldb/with-db big-red-ranch
+  (distinct
+   (run* [answer prey]
+     (plant answer)
+     (eats answer prey))))
