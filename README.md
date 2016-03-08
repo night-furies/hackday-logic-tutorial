@@ -56,4 +56,4 @@ logic-tut.dev=> (sensors-for-satellite sat-graph "Landsat" "Landsat 7")
 
 ## License
 
-Copyright © 2016 David Hill, Duncan McGreggor
+Copyright © 2016 David Hill, Duncan McGreggor, Jon Morton
